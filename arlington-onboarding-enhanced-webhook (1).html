@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arlington Properties - Employee Onboarding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .login-header {
+            background: #00263e;
+            padding: 2rem 2rem 1.5rem;
+            text-align: center;
+            color: white;
+        }
+
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid white;
+            border-radius: 8px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .login-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-content {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: #00263e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00263e;
+            box-shadow: 0 0 0 3px rgba(0, 38, 62, 0.1);
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #c33;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3c3;
+        }
+
+        .signin-button {
+            background: #00263e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            min-height: 48px;
+            transition: background 0.3s;
+        }
+
+        .signin-button:hover {
+            background: #001f2e;
+        }
+
+        .signin-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .forgot-password a {
+            color: #00263e;
+            text-decoration: none;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-login {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .back-to-login a {
+            color: #00263e;
+            text-decoration: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .back-to-login a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .temp-password-display {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .temp-password-display p {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .temp-password-display .password-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: bold;
+            color: #00263e;
+            margin: 0.5rem 0;
+            word-break: break-all;
+        }
+
+        .copy-temp-password {
+            background: #00263e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 0.5rem;
+        }
+
+        .copy-temp-password:hover {
+            background: #001f2e;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #999;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .login-container {
+                border-radius: 0;
+            }
+
+            .login-header {
+                padding: 1.5rem 1rem 1rem;
+            }
+
+            .login-header h1 {
+                font-size: 20px;
+            }
+
+            .login-content {
+                padding: 1.5rem;
+            }
+
+            .logo-placeholder {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+
+            .checkbox-group {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .main-app {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .arlington-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .arlington-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: #00263e;
+            margin-bottom: 0.5rem;
+        }
+
+        .arlington-header p {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-section {
+            background: #f5f5f5;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .admin-section h2 {
+            font-size: 20px;
+            color: #00263e;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+
+        .button {
+            background: #00263e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 48px;
+            width: 100%;
+        }
+
+        .button:hover {
+            background: #001f2e;
+        }
+
+        .admin-logout {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+
+        .admin-logout button {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .hire-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .hire-info {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .hire-url {
+            font-size: 12px;
+            color: #00263e;
+            background: #f0f0f0;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: #00263e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 0.5rem;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 2rem;
+        }
+
+        .error-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .error-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .error-modal-content h2 {
+            color: #dc3545;
+            margin-bottom: 1rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #00263e;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            z-index: 1000;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #00263e;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- MAIN APP (SHOWS IMMEDIATELY) -->
+    <div id="mainApp" class="main-app">
+        <div class="container">
+            <div class="arlington-header">
+                <h1>Arlington</h1>
+                <p>New Hire Onboarding Management</p>
+            </div>
+
+            <div class="admin-section">
+                <p style="font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-weight: 600;">Admin Only</p>
+                <h2>Create New Hire Form</h2>
+                
+                <div class="form-group">
+                    <label>Candidate's Full Name</label>
+                    <input type="text" id="adminName" placeholder="Enter candidate's full name">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Position Title</label>
+                        <input type="text" id="adminPosition" placeholder="e.g. Chief Maintenance Wizard">
+                    </div>
+                    <div class="form-group">
+                        <label>Property Name</label>
+                        <input type="text" id="adminProperty" placeholder="e.g. Terrace 31 Apartments">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Application Link (Paycom)</label>
+                    <input type="text" id="adminAppLink" placeholder="https://paycom.com/apply/...">
+                </div>
+
+                <div class="form-group">
+                    <label>Background Check/Drug Screen Link</label>
+                    <input type="text" id="adminBgLink" placeholder="https://checkr.com/screen/...">
+                </div>
+
+                <div class="form-group">
+                    <label>I-9 Verification Link</label>
+                    <input type="text" id="adminI9Link" placeholder="https://yoursite.com/i9/...">
+                </div>
+
+                <div class="form-group">
+                    <label>Department</label>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem; margin-top: 1rem;">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="department" value="ACS/PBS/ORVA" id="dept1">
+                            <label for="dept1" style="font-size: 13px; margin: 0; cursor: pointer;">ACS/PBS/ORVA</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="department" value="Acquisition" id="dept2">
+                            <label for="dept2" style="font-size: 13px; margin: 0; cursor: pointer;">Acquisition</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="department" value="Property Management" id="dept3">
+                            <label for="dept3" style="font-size: 13px; margin: 0; cursor: pointer;">Property Management</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="button" onclick="createNewHire()">Generate Form Link</button>
+            </div>
+
+            <div class="admin-section">
+                <h2>Active forms</h2>
+                <div id="hiresList"></div>
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <p>No forms created yet. Create one above to get started.</p>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="button" onclick="downloadHiresAsCSV()">Download as CSV</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+    <div id="errorModal" class="error-modal hidden">
+        <div class="error-modal-content">
+            <h2>Form Not Found</h2>
+            <p>This link is invalid or has expired. Please contact HR for a new link.</p>
+            <p><strong>Email: HR@arlingtonholdings.net</strong></p>
+            <button class="button" onclick="goHome()">Go Home</button>
+        </div>
+    </div>
+
+    <script>
+        // === CONFIGURATION ===
+        const MANUAL_BASE_URL = 'https://bxarlington.github.io/Preemployment-Checklist';
+        
+        // === FUNNY POSITION TITLES (100) ===
+        const POSITION_TITLES = [
+            'Chief Maintenance Wizard',
+            'Property Preservation Ninja',
+            'Resident Relations Rockstar',
+            'Leak Detection Detective',
+            'HVAC Hero',
+            'Appliance Whisperer',
+            'Hallway Illumination Specialist',
+            'Plumbing Problem Solver',
+            'Paint Master General',
+            'Carpet Care Crusader',
+            'Door & Lock Virtuoso',
+            'Window Washing Warrior',
+            'Roof Guardian',
+            'Foundation Protector',
+            'Pest Defense Captain',
+            'Landscaping Legend',
+            'Parking Lot Perfectionist',
+            'Common Area Commander',
+            'Safety Supreme Officer',
+            'Emergency Response Elite',
+            'Resident Experience Maestro',
+            'Complaint Resolution Champion',
+            'Maintenance Miracle Worker',
+            'Equipment Efficiency Expert',
+            'Tool Master Technician',
+            'Supply Chain Specialist',
+            'Budget Balancer',
+            'Vendor Vanguard',
+            'Inspection Investigator',
+            'Code Compliance Keeper',
+            'Documentation Dynamo',
+            'Communication Catalyst',
+            'Team Building Trailblazer',
+            'Training Transition Specialist',
+            'Quality Assurance Guardian',
+            'Performance Peak Performer',
+            'Problem Prevention Pioneer',
+            'Solution Synthesis Specialist',
+            'Customer Care Champion',
+            'Tenant Triumph Manager',
+            'Conflict Resolution Crusader',
+            'Dispute Defuser',
+            'Mediation Master',
+            'Harmony Handler',
+            'Peace Promoter',
+            'Balance Bringer',
+            'Morale Motivator',
+            'Enthusiasm Enabler',
+            'Engagement Energizer',
+            'Satisfaction Satisfaction Specialist',
+            'Experience Enhancer',
+            'Convenience Creator',
+            'Efficiency Educator',
+            'Resource Ranger',
+            'Asset Ambassador',
+            'Facility Facilitator',
+            'Infrastructure Innovator',
+            'Systems Stabilizer',
+            'Process Perfecter',
+            'Procedure Pro',
+            'Operation Optimizer',
+            'Management Maestro',
+            'Leadership Legend',
+            'Vision Validator',
+            'Mission Motivator',
+            'Goal Guardian',
+            'Target Tracker',
+            'Achievement Architect',
+            'Success Specialist',
+            'Victory Vigilante',
+            'Winner Warrior',
+            'Excellence Executive',
+            'Premier Professional',
+            'Elite Executor',
+            'Master Maintenance Manager',
+            'Senior Service Specialist',
+            'Principal Problem Eliminator',
+            'Lead Logistics Leader',
+            'Director of Daily Operations',
+            'Chief Cheerleader Officer',
+            'Supreme Sense-Making Specialist',
+            'Extraordinary Experience Expert',
+            'Remarkable Results Renderer',
+            'Outstanding Operations Officer',
+            'Distinguished Duty Doer',
+            'Exemplary Execution Expert',
+            'Fabulous Facility Fixer',
+            'Glorious Grounds Guardian',
+            'Harmonious Habitat Handler',
+            'Impeccable Infrastructure Keeper',
+            'Joyful Janitor Juggernaut',
+            'Knowledge Keeper Keymaster',
+            'Legendary Logistics Leader',
+            'Magnificent Maintenance Maestro',
+            'Noble Needs Navigator',
+            'Outstanding Order Orchestrator',
+            'Perfect Property Protector',
+            'Quest Master Quality Keeper',
+            'Remarkable Response Ranger',
+            'Super Service Sentinel',
+            'Terrific Technician Troop Leader',
+            'Unforgettable Unit Upgrader',
+            'Virtuoso Visitor Valuator',
+            'Warrior of Well-Being',
+            'X-Factor Excellence Executor',
+            'Yonder Yield Yielder',
+            'Zenith Zero-Defect Zealot'
+        ];
+
+        // === PROPERTY NAMES (100) ===
+        const PROPERTY_NAMES = [
+            'Terrace 31 Apartments',
+            'Sunset Ridge Residences',
+            'Pine Valley Heights',
+            'Meadowbrook Manor',
+            'Crystal Lakes Community',
+            'Riverside Commons',
+            'Parkside Plaza',
+            'Greenfield Gardens',
+            'Autumn Leaf Estates',
+            'Birch Street Towers',
+            'Cedar Grove Apartments',
+            'Dogwood Gardens',
+            'Elm Court Residences',
+            'Fir Ridge Towers',
+            'Gateway Apartments',
+            'Haven Hills Homes',
+            'Ivy Lane Residences',
+            'Juniper Junction',
+            'Keystone Village',
+            'Laurel Place',
+            'Maple Ridge Complex',
+            'Northbrook Apartments',
+            'Oak Hill Residences',
+            'Pinnacle Park',
+            'Quartz Valley Estates',
+            'River Rock Residences',
+            'Scenic Springs',
+            'Timber Trails Community',
+            'Urban Plaza Apartments',
+            'Valley View Towers',
+            'Westwood Heights',
+            'Yorktown Apartments',
+            'Zenith Towers',
+            'Ascent Place',
+            'Beacon Hill',
+            'Capital Residences',
+            'Duchess Lane',
+            'Elevation Apartments',
+            'Fairmont Gardens',
+            'Grand Boulevard',
+            'Heritage Heights',
+            'Imperial Court',
+            'Jubilee Homes',
+            'Kingston Village',
+            'Landmark Apartments',
+            'Monarch Manor',
+            'Neptune Gardens',
+            'Olympus Heights',
+            'Parkway Apartments',
+            'Quantum Village',
+            'Royale Residences',
+            'Sterling Place',
+            'Triumph Towers',
+            'Universal Apartments',
+            'Valor Residences',
+            'Windsor Park',
+            'Xenon Village',
+            'Yale Court',
+            'Zodiac Apartments',
+            'Admiral\'s Choice',
+            'Baroness Circle',
+            'Chancellor Place',
+            'Dynasty Residences',
+            'Empress Apartments',
+            'Fortuna Heights',
+            'Grand Estates',
+            'Highlander Complex',
+            'Illustrious Court',
+            'Jewel Park',
+            'Kingdom Apartments',
+            'Liberty Heights',
+            'Majestic Residences',
+            'Noble Towers',
+            'Opulent Place',
+            'Palace Park',
+            'Quality Court',
+            'Renaissance Apartments',
+            'Sovereign Heights',
+            'Treasury Residences',
+            'Ultimate Village',
+            'Venture Place',
+            'Wellspring Apartments',
+            'Xavier Gardens',
+            'Yardley Residences',
+            'Zenith Park',
+            'Arborway Apartments',
+            'Brookside Gardens',
+            'Chatham Village',
+            'Dorchester Heights',
+            'Eastfield Residences',
+            'Foxridge Apartments',
+            'Greenmont Place',
+            'Hartwick Towers',
+            'Inwood Apartments',
+            'Jarlton Heights',
+            'Keswick Place',
+            'Lansing Court',
+            'Morningside Apartments',
+            'Newberry Residences',
+            'Oxbridge Gardens'
+        ];
+
+        // === STATE ===
+        let hires = [];
+
+        // === RANDOM SELECTION ===
+        function getRandomPositionTitle() {
+            return POSITION_TITLES[Math.floor(Math.random() * POSITION_TITLES.length)];
+        }
+
+        function getRandomPropertyName() {
+            return PROPERTY_NAMES[Math.floor(Math.random() * PROPERTY_NAMES.length)];
+        }
+
+        // === HIRE MANAGEMENT ===
+        function createNewHire() {
+            const name = document.getElementById('adminName').value.trim();
+            const position = document.getElementById('adminPosition').value.trim();
+            const property = document.getElementById('adminProperty').value.trim();
+            const appLink = document.getElementById('adminAppLink').value.trim();
+            const bgLink = document.getElementById('adminBgLink').value.trim();
+            const i9Link = document.getElementById('adminI9Link').value.trim();
+            const department = document.querySelector('input[name="department"]:checked')?.value;
+
+            if (!name || !position || !property || !appLink || !bgLink || !i9Link || !department) {
+                showToast('All fields are required');
+                return;
+            }
+
+            const id = generateUUID();
+            
+            const hire = {
+                id,
+                name,
+                position,
+                property,
+                appLink,
+                bgLink,
+                i9Link,
+                department,
+                created: new Date().toLocaleDateString(),
+                timestamp: new Date().toLocaleString(),
+                formUrl: `${MANUAL_BASE_URL}/arlington-onboarding-enhanced-webhook.html?hire=${id}`
+            };
+
+            hires.push(hire);
+            saveHires();
+
+            document.getElementById('adminName').value = '';
+            document.getElementById('adminPosition').value = '';
+            document.getElementById('adminProperty').value = '';
+            document.getElementById('adminAppLink').value = '';
+            document.getElementById('adminBgLink').value = '';
+            document.getElementById('adminI9Link').value = '';
+            document.querySelectorAll('input[name="department"]').forEach(el => el.checked = false);
+
+            renderDashboard();
+            showToast(`Form created for ${name}`);
+        }
+
+        function deleteHire(id) {
+            hires = hires.filter(h => h.id !== id);
+            saveHires();
+            renderDashboard();
+            showToast('Hire deleted');
+        }
+
+        function renderDashboard() {
+            const hiresList = document.getElementById('hiresList');
+            
+            if (hires.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                hiresList.innerHTML = '';
+            } else {
+                document.getElementById('emptyState').style.display = 'none';
+                hiresList.innerHTML = hires.map((hire, index) => `
+                    <div class="hire-card">
+                        <h3>${hire.name}</h3>
+                        <div class="hire-info">${hire.position} - ${hire.property}</div>
+                        <div class="hire-info">Department: ${hire.department}</div>
+                        <div class="hire-info">Generated: ${hire.created}</div>
+                        <div class="hire-url">${hire.formUrl}</div>
+                        <button class="copy-btn" onclick="copyToClipboard('${hire.formUrl.replace(/'/g, "\\'")}')">Copy link</button>
+                        <button class="delete-btn" onclick="deleteHire('${hire.id}')">Delete</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function downloadHiresAsCSV() {
+            if (hires.length === 0) {
+                showToast('No hires to export');
+                return;
+            }
+
+            let csv = 'ID,Name,Position,Property,Department,Application Link,Background Check/Drug Screen Link,I-9 Link,Created,Timestamp\n';
+
+            hires.forEach(hire => {
+                const row = [
+                    hire.id,
+                    `"${hire.name}"`,
+                    `"${hire.position}"`,
+                    `"${hire.property}"`,
+                    `"${hire.department}"`,
+                    hire.appLink,
+                    hire.bgLink,
+                    hire.i9Link,
+                    hire.created || '',
+                    `"${hire.timestamp || ''}"`
+                ];
+                csv += row.join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Arlington_Hires_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showToast('CSV exported successfully!');
+        }
+
+        // === UTILITIES ===
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        function copyToClipboard(text) {
+            if (!text) {
+                showToast('No link to copy');
+                return;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Link copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('Link copied to clipboard!');
+                } catch (err) {
+                    showToast('Failed to copy link');
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
+        function goHome() {
+            window.location.href = MANUAL_BASE_URL + '/arlington-onboarding-enhanced-webhook.html';
+        }
+
+        function saveHires() {
+            localStorage.setItem('arlington_hires_v2', JSON.stringify(hires));
+        }
+
+        function loadHires() {
+            const stored = localStorage.getItem('arlington_hires_v2');
+            if (stored) hires = JSON.parse(stored);
+        }
+
+        // === INIT ===
+        function init() {
+            // Load hires from storage
+            loadHires();
+            
+            // Show admin dashboard directly (no login required)
+            showMainApp();
+            
+            // Populate random placeholders
+            document.getElementById('adminPosition').placeholder = `e.g. ${getRandomPositionTitle()}`;
+            document.getElementById('adminProperty').placeholder = `e.g. ${getRandomPropertyName()}`;
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
